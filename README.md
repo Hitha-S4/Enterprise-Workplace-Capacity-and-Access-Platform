@@ -12,7 +12,7 @@ This is a cloud-native microservice for reserving cafeteria seats in corporate o
 ## Features
  
 - 🪑 Multiple cafeterias per location (e.g., Bangalore, Mumbai, Delhi, Hyderabad)
-- 👥 Supports up to 1000+ employees per location
+- 👥 Supports up to 3000+ employees per location
 - 🪑 Capacity od each Catfeteria is 100 seats
 - 🔒 W3 ID authentication integrated
 - 📄 Swagger API documentation for third-party use
