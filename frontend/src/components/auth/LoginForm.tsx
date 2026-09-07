@@ -59,11 +59,11 @@ const LoginForm = () => {
         />
         <p className="mt-4 text-white text-center max-w-md bg-black/60 p-4 rounded-lg text-lg font-semibold animate-fade-in-up shadow-lg">
           <span className="block text-xl text-white tracking-wide">
-            Seamlessly reserve your cafeteria seats.
+            Coordinate workplace access across every site.
           </span>
-          <span className="block text-blue-300 mt-1 italic">No queues.</span>
-          <span className="block text-blue-400 font-bold text-lg mt-1 animate-pulse">
-            Just Blu Dollars.
+            <span className="block text-blue-300 mt-1 italic">No queues.</span>
+            <span className="block text-blue-400 font-bold text-lg mt-1 animate-pulse">
+              One capacity view.
           </span>
         </p>
       </div>
@@ -72,9 +72,9 @@ const LoginForm = () => {
       <div className="flex flex-col items-center w-full max-w-md bg-white shadow-xl rounded-xl p-6">
         <div className="mb-6 text-center">
           <h1 className="text-4xl font-bold mb-2 text-bluedollar">
-            <span className="text-blue-700">Blue</span> Reserve
+            <span className="text-blue-700">Nexus</span>Space
           </h1>
-          <p className="text-gray-500">Cafeteria seat booking made simple</p>
+          <p className="text-gray-500">Workplace capacity, coordinated</p>
         </div>
         <Card
           className="w-full transform transition-transform duration-500 hover:scale-105 hover:shadow-2xl font-sans"

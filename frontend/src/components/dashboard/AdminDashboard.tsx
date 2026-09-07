@@ -42,15 +42,15 @@ const AdminDashboard = () => {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
         <p className="text-gray-500">
-          Monitor and manage all cafetaria bookings
+          Monitor capacity, approvals, and utilization across workplace sites
         </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Total Seats</CardTitle>
-            <CardDescription>Across all cafetarias</CardDescription>
+            <CardTitle>Managed Capacity</CardTitle>
+            <CardDescription>Across all workplace hubs</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{totalSeats}</div>
@@ -59,8 +59,8 @@ const AdminDashboard = () => {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Booked Seats</CardTitle>
-            <CardDescription>Currently reserved</CardDescription>
+            <CardTitle>Active Reservations</CardTitle>
+            <CardDescription>Currently allocated</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-bluedollar">
@@ -71,8 +71,8 @@ const AdminDashboard = () => {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Pending Bookings</CardTitle>
-            <CardDescription>Awaiting approval</CardDescription>
+            <CardTitle>Approval Queue</CardTitle>
+            <CardDescription>Awaiting manager review</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-yellow-500">
@@ -83,8 +83,8 @@ const AdminDashboard = () => {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Utilization</CardTitle>
-            <CardDescription>Seat usage percentage</CardDescription>
+            <CardTitle>Capacity Utilization</CardTitle>
+            <CardDescription>Reserved capacity percentage</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-500">

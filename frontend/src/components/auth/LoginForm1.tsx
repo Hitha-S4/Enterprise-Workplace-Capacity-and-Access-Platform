@@ -64,7 +64,7 @@ const LoginForm = () => {
           <h1 className="text-4xl font-bold mb-2 text-bluedollar">
             <span className="text-blue-700">Blue</span> Reserve
           </h1>
-          <p className="text-gray-500">Cafeteria seat booking made simple</p>
+          <p className="text-gray-500">Workplace capacity, coordinated</p>
         </div>
         <Card
           className="w-full transform transition-transform duration-500 hover:scale-105 hover:shadow-2xl font-sans"

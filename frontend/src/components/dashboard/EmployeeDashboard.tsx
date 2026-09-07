@@ -118,9 +118,11 @@ const EmployeeDashboard = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">
-          Welcome to Blue Reserve
+          Welcome to NexusSpace
         </h1>
-        <p className="text-gray-500">Book and manage your cafetaria seats</p>
+        <p className="text-gray-500">
+          Coordinate your workplace access across sites and time slots
+        </p>
       </div>
 
       <Tabs defaultValue="bookings" className="w-full">

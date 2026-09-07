@@ -1,42 +1,77 @@
-# blu_reserve_app
-# Winning Team of "IBM Developer Academy Program" 
+# NexusSpace
 
-# Cafeteria Seat Reservation System
+## Enterprise Workplace Capacity and Access Platform
 
-## Overview
+**Winning Team of the IBM Developer Academy Program**
 
-This is a cloud-native microservice for reserving cafeteria seats in corporate office locations. Initially, one cafeteria with limited seating was considered, but the system has been enhanced to support **mulitple cafeterias across multiple location** to improve performance and scale. This system supports **W3 Authentication**, provides **Swagger-based REST APIs** for integration, and offers a **UI for end users**.
+NexusSpace is a cloud-native workplace operations platform for coordinating shared capacity across corporate sites. It began as a cafeteria reservation workflow and evolved into a multi-location resource orchestration system: employees reserve time-bound worksite capacity, managers approve exceptions, and administrators monitor utilization across the organization.
 
----
+This reflects a real operational problem in hybrid workplaces: fixed resources must be allocated fairly, access must be auditable, and facilities teams need a single view of demand across locations instead of disconnected spreadsheets and queues.
 
-## Features
- 
-- 🪑 Multiple cafeterias per location (e.g., Bangalore, Mumbai, Delhi, Hyderabad)
-- 👥 Supports up to 3000+ employees per location
-- 🪑 Capacity od each Catfeteria is 100 seats
-- 🔒 W3 ID authentication integrated
-- 📄 Swagger API documentation for third-party use
-- 💻 UI for employees to reserve cafeteria seats
+## What It Solves
 
----
+- **Multi-site capacity allocation:** Model locations, workplace hubs, seat inventories, and time slots in one system.
+- **Role-aware operations:** Employees create reservations, managers review approval queues, and administrators monitor the full portfolio.
+- **Conflict-aware booking:** Check seat availability for a specific location, resource, date, and time window before confirming a reservation.
+- **Operational visibility:** Track active reservations, pending approvals, cancellations, and capacity utilization.
+- **Enterprise access:** Integrate authenticated users and role-based workflows with W3 ID-compatible identity flows.
+
+## Technical Highlights
+
+- Spring Boot REST services with separated controller, service, repository, DTO, and mapper layers.
+- PostgreSQL persistence for users, locations, workplace hubs, seats, and reservations.
+- React and TypeScript operations console with role-specific dashboards.
+- Swagger/OpenAPI-ready REST endpoints for facilities, identity, and reporting integrations.
+- Docker Compose deployment for the application stack, database, and reverse proxy.
+
+## Architecture
+
+```text
+React + TypeScript console
+		  |
+		 REST API
+		  |
+Spring Boot domain services
+		  |
+		PostgreSQL
+```
+
+The current resource type is cafeteria seating, but the domain boundary is intentionally designed around locations, resources, capacity, approvals, and reservations. That makes the platform extensible to collaboration zones, visitor seating, parking, or other shared workplace infrastructure without changing the core allocation model.
 
 ## Tech Stack
 
-- **Backend:** SpringBoot, Java
-- **Authentication:** W3 ID
-- **Database:** PostgreSQL
-- **API Docs:** Swagger (Swagger UI)
-- **Frontend:** React
----
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend:** Java, Spring Boot, Maven
+- **Data:** PostgreSQL, JPA/Hibernate
+- **Security:** Authenticated, role-aware workflows with W3 ID integration points
+- **Delivery:** Docker Compose, Caddy, Nginx
 
-## Setup Instructions
+## Local Development
 
-### 1. Clone the Repository
+### Frontend
 
 ```bash
-git clone git@github.ibm.com:Kartikey-Pandey/panthars_blu_reserve_app.git
-cd cafeteria-reservation
+cd frontend
+npm install
+npm run dev
+```
 
-## Todo
---Continuous integration /Continuous Delivery
+### Backend
+
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+
+### Full stack
+
+```bash
+docker compose up --build
+```
+
+## Resume Positioning
+
+**NexusSpace | Enterprise Workplace Capacity and Access Platform**
+
+Built a role-aware, multi-location reservation platform using React/TypeScript, Spring Boot, and PostgreSQL; implemented seat availability checks, manager approval workflows, authenticated access, and administrator utilization dashboards for shared workplace capacity.
 

@@ -49,7 +49,7 @@ const RegisterForm = () => {
           className="mx-auto w-3/4 rounded-xl shadow-lg animate-fade-in"
         />
         <h2 className="mt-4 text-xl font-semibold text-black animate-slide-in"> {/* Changed color to black */}
-          Join Blue Reserve and reserve your seat today!
+          Join NexusSpace and coordinate your next workplace visit.
         </h2>
       </div>
 
@@ -58,7 +58,7 @@ const RegisterForm = () => {
           <h1 className="text-4xl font-bold mb-2">
             <span className="text-bluedollar">Blue</span> Reserve
           </h1>
-          <p className="text-gray-600">Cafeteria seat booking made simple</p>
+          <p className="text-gray-600">Workplace capacity, coordinated</p>
         </div>
         <Card className="shadow-lg p-6"> {/* Added padding for larger card */}
           <CardHeader>

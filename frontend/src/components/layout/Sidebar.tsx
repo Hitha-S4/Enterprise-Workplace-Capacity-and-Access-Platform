@@ -49,8 +49,8 @@ const Sidebar = () => {
       <div className="flex items-center justify-between border-b border-gray-200 p-4">
         {!collapsed && (
           <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-bluedollar">Blue</span>
-            <span className="text-xl font-bold text-gray-800">Reserve</span>
+            <span className="text-xl font-bold text-bluedollar">Nexus</span>
+            <span className="text-xl font-bold text-gray-800">Space</span>
           </div>
         )}
         <Button

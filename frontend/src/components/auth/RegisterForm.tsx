@@ -92,16 +92,16 @@ const RegisterForm = ({ defaultEmail = "", allowGuestRegistration = true }) => {
           className="mx-auto w-3/4 rounded-xl shadow-lg animate-fade-in"
         />
         <h2 className="mt-4 text-xl font-semibold text-black animate-slide-in">
-          Join Blue Reserve and reserve your seat today!
+          Join NexusSpace and coordinate your next workplace visit.
         </h2>
       </div>
 
       <div className="w-full md:w-[500px]">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-2">
-            <span className="text-bluedollar">Blue</span> Reserve
+            <span className="text-bluedollar">Nexus</span>Space
           </h1>
-          <p className="text-gray-600">Cafetaria seat booking made simple</p>
+          <p className="text-gray-600">Workplace capacity, coordinated</p>
         </div>
 
         <Card className="shadow-lg p-6">
