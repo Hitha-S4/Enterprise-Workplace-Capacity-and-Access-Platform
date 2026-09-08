@@ -5,7 +5,7 @@ import com.panthars.blue_reserve.dto.BookingResponse;
 import com.panthars.blue_reserve.mapper.BookingMapper;
 import com.panthars.blue_reserve.model.Booking;
 import com.panthars.blue_reserve.service.BookingService;
-import com.panthars.blue_reserve.utils.BookingStatus;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +18,12 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final BookingMapper bookingMapper;
 
     @Autowired
-    private BookingMapper bookingMapper;
-
-    @Autowired
-    public BookingController(BookingService bookingService) {
+    public BookingController(BookingService bookingService, BookingMapper bookingMapper) {
         this.bookingService = bookingService;
+        this.bookingMapper = bookingMapper;
     }
 
     // Fetch all bookings
@@ -36,39 +35,21 @@ public class BookingController {
 
     // Create booking
     @PostMapping
-    public ResponseEntity<?> createBooking(@RequestBody BookingRequest request) {
-        try {
-            bookingService.createBooking(request);
-            return ResponseEntity.ok("Booking request submitted");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error creating booking: " + e.getMessage());
-        }
+    public ResponseEntity<Void> createBooking(@Valid @RequestBody BookingRequest request) {
+        bookingService.createBooking(request);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{bookingId}/approve")
     public ResponseEntity<BookingResponse> approveBooking(@PathVariable Long bookingId) {
-        try {
-            // Approve the booking
-            Booking booking = bookingService.approveBooking(bookingId);
-            // Map to BookingResponse using the mapper
-            BookingResponse response = bookingMapper.toResponse(booking);
-            return ResponseEntity.ok(response); // Ensure that ResponseEntity is parameterized with BookingResponse
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(new BookingResponse(null, null, BookingStatus.PENDING, null, null, null, null, null, null, null, null, null, null, null, null, null));
-        }
+        Booking booking = bookingService.approveBooking(bookingId);
+        return ResponseEntity.ok(bookingMapper.toResponse(booking));
     }
 
     @PatchMapping("/{bookingId}/reject")
     public ResponseEntity<BookingResponse> rejectBooking(@PathVariable Long bookingId) {
-        try {
-            // Reject the booking
-            Booking booking = bookingService.rejectBooking(bookingId);
-            // Map to BookingResponse using the mapper
-            BookingResponse response = bookingMapper.toResponse(booking);
-            return ResponseEntity.ok(response); // Again, use ResponseEntity with BookingResponse type
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(new BookingResponse(null, null, BookingStatus.REJECTED, null, null, null, null, null, null, null, null, null, null, null, null, null));
-        }
+        Booking booking = bookingService.rejectBooking(bookingId);
+        return ResponseEntity.ok(bookingMapper.toResponse(booking));
     }
 
 

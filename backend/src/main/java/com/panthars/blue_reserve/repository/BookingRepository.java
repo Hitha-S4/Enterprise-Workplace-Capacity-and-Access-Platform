@@ -15,6 +15,16 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b.seat.id FROM Booking b WHERE b.date = :date AND b.slot.id = :slotId AND b.cafeteria.id = :cafeteriaId AND b.status in ('PENDING', 'APPROVED')")
     List<Long> findBookedSeatIds(@Param("date") LocalDate date, @Param("slotId") Long slotId, @Param("cafeteriaId") Long cafeteriaId);
+
+    @Query("SELECT COUNT(b) > 0 FROM Booking b "
+        + "WHERE b.seat.id = :seatId AND b.date = :date AND b.slot.id = :slotId "
+        + "AND b.status IN :statuses")
+    boolean existsReservationForSlot(
+        @Param("seatId") Long seatId,
+        @Param("date") LocalDate date,
+        @Param("slotId") Long slotId,
+        @Param("statuses") List<BookingStatus> statuses
+    );
     
 
 

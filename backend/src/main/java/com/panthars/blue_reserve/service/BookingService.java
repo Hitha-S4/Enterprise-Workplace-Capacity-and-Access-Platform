@@ -7,6 +7,8 @@ import com.panthars.blue_reserve.model.Booking;
 import com.panthars.blue_reserve.model.Seat;
 import com.panthars.blue_reserve.model.User;
 import com.panthars.blue_reserve.repository.*;
+import com.panthars.blue_reserve.exception.BookingConflictException;
+import com.panthars.blue_reserve.exception.ResourceNotFoundException;
 
 import com.panthars.blue_reserve.utils.BookingStatus;
 
@@ -38,7 +40,8 @@ public class BookingService {
         UserRepository userRepository,
         SlotRepository slotRepository,
         CafeteriaRepository cafeteriaRepository,
-        LocationRepository locationRepository
+        LocationRepository locationRepository,
+        BookingMapper bookingMapper
     ) {
         this.bookingRepository = bookingRepository;
         this.seatRepository = seatRepository;
@@ -46,10 +49,10 @@ public class BookingService {
         this.slotRepository = slotRepository;
         this.cafeteriaRepository = cafeteriaRepository;
         this.locationRepository = locationRepository;
+        this.bookingMapper = bookingMapper;
     }
 
-    @Autowired
-    private BookingMapper bookingMapper;
+    private final BookingMapper bookingMapper;
 
 
 
@@ -71,7 +74,7 @@ public class BookingService {
         return userRepository.findAll().stream()
                 .filter(u -> u.getRoles().stream().anyMatch(r -> r.getName().equalsIgnoreCase("ADMIN")))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Admin user not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Admin user not found"));
     }
 
     // Create a booking
@@ -79,11 +82,34 @@ public class BookingService {
     public void createBooking(BookingRequest request) {
         Booking booking = new Booking();
 
-
-
-
         User manager = userRepository.findById(request.getManagerId())
-        .orElseThrow(() -> new RuntimeException("Manager not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Manager not found"));
+
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Seat seat = seatRepository.findById(request.getSeatId())
+                .orElseThrow(() -> new ResourceNotFoundException("Seat not found"));
+        var slot = slotRepository.findById(request.getSlotId())
+                .orElseThrow(() -> new ResourceNotFoundException("Slot not found"));
+        var cafeteria = cafeteriaRepository.findById(request.getCafeteriaId())
+                .orElseThrow(() -> new ResourceNotFoundException("Cafeteria not found"));
+        var location = locationRepository.findById(request.getLocationId())
+                .orElseThrow(() -> new ResourceNotFoundException("Location not found"));
+
+        if (!seat.isAvailable()) {
+            throw new BookingConflictException("The selected seat is unavailable");
+        }
+        if (seat.getCafeteria() == null || !seat.getCafeteria().getId().equals(cafeteria.getId())) {
+            throw new BookingConflictException("The selected seat does not belong to the selected cafeteria");
+        }
+        if (cafeteria.getLocation() == null || !cafeteria.getLocation().getId().equals(location.getId())) {
+            throw new BookingConflictException("The selected cafeteria does not belong to the selected location");
+        }
+        if (bookingRepository.existsReservationForSlot(
+                seat.getId(), request.getDate(), slot.getId(),
+                List.of(BookingStatus.PENDING, BookingStatus.APPROVED))) {
+            throw new BookingConflictException("The selected seat is already reserved for this time slot");
+        }
 
         booking.setManager(manager);
 
@@ -92,7 +118,7 @@ public class BookingService {
             booking.setStatus(BookingStatus.APPROVED);
 
             if (manager.getBlueDollars() < 10) {
-                throw new RuntimeException("Manager does not have enough blue dollars");
+                throw new BookingConflictException("Manager does not have enough blue dollars");
             }
 
             // Deduct from manager
@@ -108,17 +134,11 @@ public class BookingService {
         }
 
 
-        booking.setUser(userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found")));
-       
-        booking.setSeat(seatRepository.findById(request.getSeatId())
-                .orElseThrow(() -> new RuntimeException("Seat not found")));
-        booking.setSlot(slotRepository.findById(request.getSlotId())
-                .orElseThrow(() -> new RuntimeException("Slot not found")));
-        booking.setCafeteria(cafeteriaRepository.findById(request.getCafeteriaId())
-                .orElseThrow(() -> new RuntimeException("Cafeteria not found")));
-        booking.setLocation(locationRepository.findById(request.getLocationId())
-                .orElseThrow(() -> new RuntimeException("Location not found")));
+        booking.setUser(user);
+        booking.setSeat(seat);
+        booking.setSlot(slot);
+        booking.setCafeteria(cafeteria);
+        booking.setLocation(location);
         booking.setDate(request.getDate());
         booking.setCreatedAt(LocalDateTime.now());
         booking.setActive(true);
@@ -198,24 +218,24 @@ public class BookingService {
     
     // Approve a booking
     @Transactional
-    public Booking approveBooking(Long bookingId) throws Exception {
+    public Booking approveBooking(Long bookingId) {
         Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
 
         if (!optionalBooking.isPresent()) {
-            throw new Exception("Booking not found");
+            throw new ResourceNotFoundException("Booking not found");
         }
 
         Booking booking = optionalBooking.get();
 
         // Check if booking is already approved or rejected
         if (booking.getStatus() != BookingStatus.PENDING) {
-            throw new Exception("Booking is already approved or rejected");
+            throw new BookingConflictException("Booking is already approved or rejected");
         }
 
         // Deduct 10 blue dollars from the manager
         User manager = booking.getManager();
         if (manager.getBlueDollars() < 10) {
-            throw new Exception("Manager does not have enough blue dollars");
+            throw new BookingConflictException("Manager does not have enough blue dollars");
         }
 
         manager.setBlueDollars(manager.getBlueDollars() - 10);
@@ -235,18 +255,18 @@ public class BookingService {
 
     // Reject a booking
     @Transactional
-    public Booking rejectBooking(Long bookingId) throws Exception {
+    public Booking rejectBooking(Long bookingId) {
         Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
 
         if (!optionalBooking.isPresent()) {
-            throw new Exception("Booking not found");
+            throw new ResourceNotFoundException("Booking not found");
         }
 
         Booking booking = optionalBooking.get();
 
         // Check if booking is already approved or rejected
         if (booking.getStatus() != BookingStatus.PENDING) {
-            throw new Exception("Booking is already approved or rejected");
+            throw new BookingConflictException("Booking is already approved or rejected");
         }
 
         // Update booking status to rejected

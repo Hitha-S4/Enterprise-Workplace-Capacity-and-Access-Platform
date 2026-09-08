@@ -19,9 +19,12 @@ This reflects a real operational problem in hybrid workplaces: fixed resources m
 ## Technical Highlights
 
 - Spring Boot REST services with separated controller, service, repository, DTO, and mapper layers.
+- Domain-level booking invariants for past dates, unavailable seats, invalid resource relationships, and duplicate time-slot reservations.
+- Bean Validation on API requests with structured Problem Details responses for validation, missing-resource, and conflict errors.
 - PostgreSQL persistence for users, locations, workplace hubs, seats, and reservations.
 - React and TypeScript operations console with role-specific dashboards.
 - Swagger/OpenAPI-ready REST endpoints for facilities, identity, and reporting integrations.
+- Mockito-backed service tests for reservation conflict behavior.
 - Docker Compose deployment for the application stack, database, and reverse proxy.
 
 ## Architecture
@@ -73,5 +76,5 @@ docker compose up --build
 
 **NexusSpace | Enterprise Workplace Capacity and Access Platform**
 
-Built a role-aware, multi-location reservation platform using React/TypeScript, Spring Boot, and PostgreSQL; implemented seat availability checks, manager approval workflows, authenticated access, and administrator utilization dashboards for shared workplace capacity.
+Built a role-aware, multi-location reservation platform using React/TypeScript, Spring Boot, and PostgreSQL; enforced booking invariants, duplicate-reservation detection, manager approval workflows, structured REST error contracts, and administrator utilization dashboards for shared workplace capacity.
 
