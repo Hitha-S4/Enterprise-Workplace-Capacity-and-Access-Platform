@@ -72,7 +72,7 @@ cd backend
 docker compose up --build
 ```
 
-## Resume Positioning
+
 
 **NexusSpace | Enterprise Workplace Capacity and Access Platform**
 
